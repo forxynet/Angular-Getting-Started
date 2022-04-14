@@ -1,14 +1,13 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 
 @Component({
   selector: 'pm-star',
   templateUrl: './star.component.html',
   styleUrls: ['./star.component.css']
 })
-
-export class StarComponent {
-  @Input() rating: number = 0;
-  cropWidth: number = 75;
+export class StarComponent implements OnChanges {
+  @Input() rating = 0;
+  cropWidth = 75;
   @Output() ratingClicked: EventEmitter<string> =
     new EventEmitter<string>();
 
@@ -17,6 +16,6 @@ export class StarComponent {
   }
 
   onClick(): void {
-    this.ratingClicked.emit(`The rating ${this.rating} was clicked`);
+    this.ratingClicked.emit(`The rating ${this.rating} was clicked!`);
   }
 }

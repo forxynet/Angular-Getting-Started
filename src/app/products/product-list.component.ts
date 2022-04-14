@@ -5,7 +5,7 @@ import { ProductService } from './product.service';
 
 @Component({
   templateUrl: './product-list.component.html',
-  styleUrls: [ './product-list.component.css']
+  styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit, OnDestroy {
   pageTitle = 'Product List';
@@ -15,27 +15,24 @@ export class ProductListComponent implements OnInit, OnDestroy {
   errorMessage = '';
   sub!: Subscription;
 
-  private _listFilter: string = '';
+  private _listFilter = '';
   get listFilter(): string {
     return this._listFilter;
   }
   set listFilter(value: string) {
     this._listFilter = value;
-    console.log('In set listFilter', value);
-    this.filterProducts = this.performFilter(value);
+    this.filteredProducts = this.performFilter(value);
   }
 
-  filterProducts: IProduct[] = [];
-
+  filteredProducts: IProduct[] = [];
   products: IProduct[] = [];
 
-  constructor(private productService: ProductService) {
+  constructor(private productService: ProductService) {}
 
-  }
   performFilter(filterBy: string): IProduct[] {
     filterBy = filterBy.toLocaleLowerCase();
     return this.products.filter((product: IProduct) =>
-    product.productName.toLocaleLowerCase().includes(filterBy));
+      product.productName.toLocaleLowerCase().includes(filterBy));
   }
 
   toggleImage(): void {
@@ -45,14 +42,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.productService.getProducts().subscribe({
       next: products => {
-        this.products = products,
-        this.filterProducts = this.products;
+        this.products = products;
+        this.filteredProducts = this.products;
       },
       error: err => this.errorMessage = err
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
@@ -60,5 +57,3 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.pageTitle = 'Product List: ' + message;
   }
 }
-
-
